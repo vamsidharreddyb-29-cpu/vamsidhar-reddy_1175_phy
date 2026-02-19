@@ -1,0 +1,24 @@
+# ps1a.py
+# Assignment 1 - Part A
+# House Hunting
+# School of Computing and Data Science
+# Sai University
+# Constants
+ANNUAL_RETURN = 0.04
+DOWN_PAYMENT_PORTION = 0.25
+# User inputs
+annual_salary = float(input("Enter your annual salary: "))
+portion_saved = float(input("Enter the percent of your salary to save, as a decimal: "))
+total_cost = float(input("Enter the cost of your dream home: "))
+# Initial values
+current_savings = 0.0
+monthly_salary = annual_salary / 12
+down_payment = total_cost * DOWN_PAYMENT_PORTION
+months = 0
+# Calculation loop
+while current_savings < down_payment:
+    current_savings += current_savings * (ANNUAL_RETURN / 12)
+    current_savings += monthly_salary * portion_saved
+    months += 1
+# Output
+print("Number of months:", months)
