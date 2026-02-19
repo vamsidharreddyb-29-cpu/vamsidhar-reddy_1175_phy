@@ -1,0 +1,60 @@
+# ps1c.py
+# Assignment 1 - Part C
+# Finding the Right Amount to Save (Bisection Search)
+# School of Computing and Data Science
+# Sai University
+# Constants
+TOTAL_COST = 1000000
+DOWN_PAYMENT_PORTION = 0.25
+ANNUAL_RETURN = 0.04
+SEMI_ANNUAL_RAISE = 0.07
+MONTHS = 36
+TOLERANCE = 100  # Acceptable difference in dollars
+# User input
+starting_salary = float(input("Enter the starting salary: "))
+down_payment = TOTAL_COST * DOWN_PAYMENT_PORTION
+# Check if it is possible with 100% savings rate
+current_savings = 0.0
+annual_salary = starting_salary
+monthly_salary = annual_salary / 12
+for month in range(1, MONTHS + 1):
+    current_savings += current_savings * (ANNUAL_RETURN / 12)
+    current_savings += monthly_salary  # Saving 100%
+    if month % 6 == 0:
+        annual_salary += annual_salary * SEMI_ANNUAL_RAISE
+        monthly_salary = annual_salary / 12
+if current_savings < down_payment - TOLERANCE:
+    print("It is not possible to pay the down payment in three years.")
+else:
+    # Bisection search
+    low = 0
+    high = 10000  # Represent 100.00%
+    steps = 0
+    best_rate = 0
+
+    while True:
+        steps += 1
+        mid = (low + high) // 2
+        portion_saved = mid / 10000
+
+        # Reset savings simulation
+        current_savings = 0.0
+        annual_salary = starting_salary
+        monthly_salary = annual_salary / 12
+
+        for month in range(1, MONTHS + 1):
+            current_savings += current_savings * (ANNUAL_RETURN / 12)
+            current_savings += monthly_salary * portion_saved
+            if month % 6 == 0:
+                annual_salary += annual_salary * SEMI_ANNUAL_RAISE
+                monthly_salary = annual_salary / 12
+
+        if abs(current_savings - down_payment) <= TOLERANCE:
+            best_rate = portion_saved
+            break
+        elif current_savings < down_payment:
+            low = mid
+        else:
+            high = mid
+    print("Best savings rate:", round(best_rate, 4))
+    print("Steps in bisection search:", steps)
